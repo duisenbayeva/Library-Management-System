@@ -5,6 +5,7 @@ import { AddCustomerComponent } from '../add-customer/add-customer.component';
 import { CustomerDetailsComponent } from '../customer-details/customer-details.component';
 import { BookComponent } from '../book/book.component';
 
+
 const routes: Routes = [
   { 
     path: 'books', 

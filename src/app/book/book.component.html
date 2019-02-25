@@ -2,3 +2,26 @@
 <div *ngFor="let book of books ">
   <a style="color:black"><span class="badge badge-dark">{{book.isbn}}</span> -> {{ book.title }}</a>
 </div>
+
+<div class="mat-elevation-z8 data-table" >
+  <mat-table #table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="isbn">
+      <mat-header-cell *matHeaderCellDef> isbn </mat-header-cell>
+      <mat-cell *matCellDef="let book"> {{book.isbn}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="title">
+      <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
+      <mat-cell *matCellDef="let book"> {{book.title}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="authors">
+      <mat-header-cell *matHeaderCellDef> authors </mat-header-cell>
+      <mat-cell *matCellDef="let book"> {{book.authors}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="available">
+      <mat-header-cell *matHeaderCellDef> Available </mat-header-cell>
+      <mat-cell *matCellDef="let book"> {{book.available}} </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>
