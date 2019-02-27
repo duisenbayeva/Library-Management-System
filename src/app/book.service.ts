@@ -12,10 +12,9 @@ const httpOptions = {
 })
 export class BookService {
   private booksUrl = 'http://localhost:8080/api/books';  // URL to web api
-  constructor( 
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) { }
 
+  //offset: number, pageSize:number
   getBooks (): Observable<Book[]> {
     return this.http.get<Book[]>(this.booksUrl)
   }

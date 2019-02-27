@@ -5,6 +5,7 @@ import {DataSource} from '@angular/cdk/collections';
 import { Observable } from 'rxjs';
 
 
+
 @Component({
   selector: 'app-book',
   templateUrl: './book.component.html',
@@ -20,6 +21,10 @@ export class BookComponent implements OnInit {
   ngOnInit(): void {
      //this.getBooks();
   }
+
+  onRowClicked(row) {
+    console.log('Row clicked: ', row);
+}
 
   getBooks() {
     return this.bookService.getBooks()

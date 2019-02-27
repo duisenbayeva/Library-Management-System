@@ -14,7 +14,7 @@ import { BookComponent } from './book/book.component';
 import { BookLoansComponent } from './book-loans/book-loans.component';
 import { BorrowerComponent } from './borrower/borrower.component';
 
-import { MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
+import { MatTableModule, MatPaginatorModule, MatSortModule, MatInputModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -34,6 +34,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     HttpClientModule,
     MatTableModule,
+    MatInputModule,
     MatPaginatorModule,
     MatSortModule
   ],
