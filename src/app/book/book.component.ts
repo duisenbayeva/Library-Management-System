@@ -1,11 +1,12 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { Book } from '../book';
-import { BookService } from '../book.service';
+import { Book } from '../model/book';
+
 import { DataSource } from '@angular/cdk/collections';
 import { Observable, merge, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { MatPaginator } from '@angular/material';
+import { BookService } from '../services/book.service';
 
 
 
@@ -16,7 +17,7 @@ import { MatPaginator } from '@angular/material';
 })
 export class BookComponent implements OnInit, AfterViewInit {
   //dataSource = new BookDataSource(this.bookService);
-  displayedColumns: string[] = ['isbn', 'title', 'authors'];
+  displayedColumns: string[] = ['isbn', 'title', 'authors', 'actions'];
   books: Book[] = [];
   bookDatabase: BookService | null;
 
@@ -78,24 +79,4 @@ export class BookComponent implements OnInit, AfterViewInit {
     this.ngAfterViewInit();
   }
 
-  // getBooks() {
-  //   return this.bookService.getBooks("", 0, 3)
-  //     .subscribe(
-  //       books => {
-  //         console.log(books);
-  //         this.books = books
-  //       }
-  //     );
-  // }
-
 }
-
-// export class BookDataSource extends DataSource<any> {
-//   constructor(private bookService: BookService) {
-//     super();
-//   }
-//   connect(): Observable<Book[]> {
-//     return this.bookService.getBooks("a", 0, 3);
-//   }
-//   disconnect() { }
-// }
