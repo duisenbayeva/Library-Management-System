@@ -20,6 +20,7 @@ export class BookComponent implements OnInit, AfterViewInit {
   books: Book[] = [];
   bookDatabase: BookService | null;
 
+  filter: string = "";
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
@@ -35,17 +36,15 @@ export class BookComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
 
     this.bookDatabase = new BookService(this.http);
-
-    // If the user changes the sort order, reset back to the first page.
-    //this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
+    console.log("request");
+    //this.loadBooks();
     merge(this.paginator.page)
       .pipe(
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
           return this.bookDatabase!.getBooks(
-            "a", this.paginator.pageIndex, 10);
+            this.filter, this.paginator.pageIndex, this.paginator.pageSize);
         }),
         map(data => {
           // Flip flag to show that loading has finished.
@@ -69,8 +68,14 @@ export class BookComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter(filterValue: string) {
-    //this.dataSource.filter = filterValue.trim().toLowerCase();
-    console.log("filter value: ", filterValue);
+    //this.books = filterValue.trim().toLowerCase();
+    console.log("filter value: ", filterValue.trim().toLowerCase());
+    this.filter = filterValue;
+    //this.loadBooks();
+    this.resultsLength = 0;
+    this.isLoadingResults = true;
+    this.isRateLimitReached = false;
+    this.ngAfterViewInit();
   }
 
   // getBooks() {

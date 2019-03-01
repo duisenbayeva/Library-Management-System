@@ -17,7 +17,13 @@ export class BookService {
   //offset: number, pageSize:number
   getBooks(search: string, offset: number, pageSize: number): Observable<BookApi> {
     console.log("search ..=", search, offset, pageSize)
-    const url = `${this.booksUrl}/${search}/${offset}/${pageSize}`;
+    var url = "";
+    if (search.length == 0) {
+      url = `${this.booksUrl}/${offset}/${pageSize}`;
+    }
+    else {
+      url = `${this.booksUrl}/${offset}/${pageSize}/${search}`;
+    }
     return this.http.get<BookApi>(url);
   }
 
