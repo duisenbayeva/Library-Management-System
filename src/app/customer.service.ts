@@ -12,11 +12,11 @@ const httpOptions = {
 })
 export class CustomerService {
   private customersUrl = 'http://localhost:8080/api/customers';  // URL to web api
-  constructor( 
+  constructor(
     private http: HttpClient
   ) { }
 
-  getCustomers (): Observable<Customer[]> {
+  getCustomers(): Observable<Customer[]> {
     return this.http.get<Customer[]>(this.customersUrl)
   }
 
@@ -25,18 +25,18 @@ export class CustomerService {
     return this.http.get<Customer>(url);
   }
 
-  addCustomer (customer: Customer): Observable<Customer> {
+  addCustomer(customer: Customer): Observable<Customer> {
     return this.http.post<Customer>(this.customersUrl, customer, httpOptions);
   }
 
-  deleteCustomer (customer: Customer | number): Observable<Customer> {
+  deleteCustomer(customer: Customer | number): Observable<Customer> {
     const id = typeof customer === 'number' ? customer : customer.id;
     const url = `${this.customersUrl}/${id}`;
 
     return this.http.delete<Customer>(url, httpOptions);
   }
 
-  updateCustomer (customer: Customer): Observable<any> {
+  updateCustomer(customer: Customer): Observable<any> {
     return this.http.put(this.customersUrl, customer, httpOptions);
   }
 }

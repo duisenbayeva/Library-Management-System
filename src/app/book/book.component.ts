@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { Book } from '../book';
 import { BookService } from '../book.service';
-import {DataSource} from '@angular/cdk/collections';
-import { Observable } from 'rxjs';
+import { DataSource } from '@angular/cdk/collections';
+import { Observable, merge, of as observableOf } from 'rxjs';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { MatPaginator } from '@angular/material';
 
 
 
@@ -11,39 +14,83 @@ import { Observable } from 'rxjs';
   templateUrl: './book.component.html',
   styleUrls: ['./book.component.css']
 })
-export class BookComponent implements OnInit {
-  dataSource = new BookDataSource(this.bookService);
-  displayedColumns = ['isbn', 'title', 'authors', 'available'];
-  books: Book[];
+export class BookComponent implements OnInit, AfterViewInit {
+  //dataSource = new BookDataSource(this.bookService);
+  displayedColumns: string[] = ['isbn', 'title', 'authors'];
+  books: Book[] = [];
+  bookDatabase: BookService | null;
 
-  constructor(private bookService: BookService) {}
+  resultsLength = 0;
+  isLoadingResults = true;
+  isRateLimitReached = false;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-     //this.getBooks();
+    //this.getBooks();
+  }
+
+  ngAfterViewInit() {
+
+    this.bookDatabase = new BookService(this.http);
+
+    // If the user changes the sort order, reset back to the first page.
+    //this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+
+    merge(this.paginator.page)
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          this.isLoadingResults = true;
+          return this.bookDatabase!.getBooks(
+            "a", this.paginator.pageIndex, 10);
+        }),
+        map(data => {
+          // Flip flag to show that loading has finished.
+          this.isLoadingResults = false;
+          this.isRateLimitReached = false;
+          this.resultsLength = data.total_count;
+
+          return data.items;
+        }),
+        catchError(() => {
+          this.isLoadingResults = false;
+          // Catch if the GitHub API has reached its rate limit. Return empty data.
+          this.isRateLimitReached = true;
+          return observableOf([]);
+        })
+      ).subscribe(data => this.books = data);
   }
 
   onRowClicked(row) {
     console.log('Row clicked: ', row);
-}
-
-  getBooks() {
-    return this.bookService.getBooks()
-               .subscribe(
-                 books => {
-                  console.log(books);
-                  this.books = books
-                 }
-                );
- }
-
-}
-
-export class BookDataSource extends DataSource<any> {
-  constructor(private bookService: BookService) {
-    super();
   }
-  connect(): Observable<Book[]> {
-    return this.bookService.getBooks();
+
+  applyFilter(filterValue: string) {
+    //this.dataSource.filter = filterValue.trim().toLowerCase();
+    console.log("filter value: ", filterValue);
   }
-  disconnect() {}
+
+  // getBooks() {
+  //   return this.bookService.getBooks("", 0, 3)
+  //     .subscribe(
+  //       books => {
+  //         console.log(books);
+  //         this.books = books
+  //       }
+  //     );
+  // }
+
 }
+
+// export class BookDataSource extends DataSource<any> {
+//   constructor(private bookService: BookService) {
+//     super();
+//   }
+//   connect(): Observable<Book[]> {
+//     return this.bookService.getBooks("a", 0, 3);
+//   }
+//   disconnect() { }
+// }

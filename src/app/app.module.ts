@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { FormsModule }   from '@angular/forms';
-import { HttpClientModule }    from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
-import { AppRoutingModule }     from './app-routing/app-routing.module';
+import { AppRoutingModule } from './app-routing/app-routing.module';
 
 import { AppComponent } from './app.component';
 import { CustomerComponent } from './customer/customer.component';
@@ -14,7 +14,7 @@ import { BookComponent } from './book/book.component';
 import { BookLoansComponent } from './book-loans/book-loans.component';
 import { BorrowerComponent } from './borrower/borrower.component';
 
-import { MatTableModule, MatPaginatorModule, MatSortModule, MatInputModule } from '@angular/material';
+import { MatTableModule, MatPaginatorModule, MatSortModule, MatInputModule, MatProgressSpinnerModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -36,7 +36,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatTableModule,
     MatInputModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
