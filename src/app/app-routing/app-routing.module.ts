@@ -39,6 +39,10 @@ const routes: Routes = [
     component: BorrowerComponent
   },
   {
+    path: 'borrowers/:book',
+    component: BorrowerComponent
+  },
+  {
     path: 'borrowers/:id',
     component: CustomerDetailsComponent
   }

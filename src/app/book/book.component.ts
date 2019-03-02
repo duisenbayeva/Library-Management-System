@@ -7,6 +7,7 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { MatPaginator } from '@angular/material';
 import { BookService } from '../services/book.service';
+import { Router } from '@angular/router';
 
 
 
@@ -28,7 +29,7 @@ export class BookComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
     //this.getBooks();
@@ -66,6 +67,16 @@ export class BookComponent implements OnInit, AfterViewInit {
 
   onRowClicked(row) {
     console.log('Row clicked: ', row);
+  }
+
+  checkOut(book: Book) {
+    console.log('Row clicked: ', book);
+    var myurl = `${'borrowers'}/${book.isbn}`;
+    localStorage.setItem("book", JSON.stringify(book));
+    this.router.navigateByUrl(myurl)
+    //this.router.navigate(['/borrowers/', book], {});
+
+
   }
 
   applyFilter(filterValue: string) {

@@ -14,3 +14,8 @@ export interface BorrowerApi {
     items: Borrower[];
     total_count: number;
 }
+
+export class BorrowerResponse {
+    borrower: Borrower;
+    message: string;
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { Borrower } from '../model/borrower';
 import { BorrowerService } from '../services/borrower.service';
 
@@ -7,6 +7,7 @@ import { Observable, merge, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { MatPaginator } from '@angular/material';
+import { Book } from '../model/book';
 
 @Component({
   selector: 'app-borrower',
@@ -15,7 +16,7 @@ import { MatPaginator } from '@angular/material';
 })
 export class BorrowerComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['name', 'ssn', 'card_id', 'phone', 'address', 'email'];
+  displayedColumns: string[] = ['name', 'ssn', 'card_id', 'phone', 'address', 'email', 'actions'];
 
   borrowers: Borrower[] = [];
   borrowerDatabase: BorrowerService | null;
@@ -24,12 +25,15 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
+  message = "";
+  book: Book;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
+    this.book = JSON.parse(localStorage.getItem('book'));
   }
 
   ngAfterViewInit() {
@@ -77,6 +81,23 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
     this.ngAfterViewInit();
   }
 
+  checkOut(borrower) {
+    console.log("on save", borrower);
+    if (!localStorage.getItem('book')) {
+      alert("choose book in books table first!");
+    }
+    else {
+      this.borrowerDatabase.createBookLoan(borrower, this.book)
+        .subscribe(data => {
+          this.message = data.message;
+          localStorage.removeItem('book');
+          //this.submitted = true;
+          alert(this.message);
+          console.log("got response");
+        });
+    }
+
+  }
 }
 
 

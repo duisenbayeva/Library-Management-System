@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { Location } from '@angular/common';
 import { Borrower } from '../model/borrower';
+import { BorrowerService } from '../services/borrower.service';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 
 @Component({
@@ -15,19 +17,20 @@ export class AddBorrowerComponent {
 
   borrower = new Borrower();
   submitted = false;
+  message = "";
 
   constructor(
-    // private borrowerService: BorrowerService,
+    private borrowerService: BorrowerService,
     private location: Location
   ) { }
 
   newBorrower(): void {
     this.submitted = false;
     this.borrower = new Borrower();
+    console.log("new bor", this.borrower)
   }
 
   addBorrower() {
-    this.submitted = true;
     this.save();
   }
 
@@ -36,8 +39,12 @@ export class AddBorrowerComponent {
   }
 
   private save(): void {
-    console.log(this.borrower);
-    //this.borrowerService.addBorrower(this.borrower)
-    // .subscribe();
+    console.log("on save", this.borrower);
+    this.borrowerService.addBorrower(this.borrower)
+      .subscribe(data => {
+        this.message = data.message;
+        this.submitted = true;
+        console.log("got response");
+      });
   }
 }

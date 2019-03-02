@@ -18,6 +18,7 @@ import { MatTableModule, MatPaginatorModule, MatSortModule, MatInputModule, MatP
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BorrowerDetailsComponent } from './borrower-details/borrower-details.component';
 import { AddBorrowerComponent } from './add-borrower/add-borrower.component';
+import { FinesComponent } from './fines/fines.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { AddBorrowerComponent } from './add-borrower/add-borrower.component';
     BookLoansComponent,
     BorrowerComponent,
     BorrowerDetailsComponent,
-    AddBorrowerComponent
+    AddBorrowerComponent,
+    FinesComponent
   ],
   imports: [
     BrowserModule,

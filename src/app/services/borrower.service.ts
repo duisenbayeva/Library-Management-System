@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Borrower, BorrowerApi } from '../model/borrower';
+import { Borrower, BorrowerApi, BorrowerResponse } from '../model/borrower';
+import { Book } from '../model/book';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -32,8 +33,12 @@ export class BorrowerService {
     //     return this.http.get<Borrower>(url);
     //   }
 
-    addBorrower(borrower: Borrower): Observable<Borrower> {
-        return this.http.post<Borrower>(this.borrowersUrl, borrower, httpOptions);
+    addBorrower(borrower: Borrower): Observable<BorrowerResponse> {
+        return this.http.post<BorrowerResponse>(this.borrowersUrl, borrower, httpOptions);
+    }
+
+    createBookLoan(borrower: Borrower, book: Book): Observable<BorrowerResponse> {
+        return this.http.post<BorrowerResponse>('http://localhost:8080/api/newloan', { borrower: borrower, book: book }, httpOptions);
     }
 
     //   deleteBorrower(borrower: Borrower | string): Observable<Borrower> {
