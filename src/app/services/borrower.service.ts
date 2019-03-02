@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Borrower } from '../model/borrower';
+import { Borrower, BorrowerApi } from '../model/borrower';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -13,6 +13,7 @@ const httpOptions = {
 export class BorrowerService {
     private borrowersUrl = 'http://localhost:8080/api/borrowers';  // URL to web api
     constructor(private http: HttpClient) { }
+
 
     getBorrowers(search: string, offset: number, pageSize: number): Observable<BorrowerApi> {
         console.log("search ..=", search, offset, pageSize)

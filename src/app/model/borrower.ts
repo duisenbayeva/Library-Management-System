@@ -1,5 +1,16 @@
 export class Borrower {
-    name: string;
+    fname: string;
+    lname: string;
+    card_id: string;
     ssn: string;
     phone: string;
+    address: string;
+    city: string;
+    state: string;
+    email: string;
+}
+
+export interface BorrowerApi {
+    items: Borrower[];
+    total_count: number;
 }
