@@ -1,21 +1,17 @@
-table {
+  table {
     width: 100%;
   }
 
   /* Structure */
 .example-container {
   position: relative;
-  min-height: 200px;
+  min-height: 500px;
 }
 
 .example-table-container {
   position: relative;
-  max-height: 400px;
+  max-height: 450px;
   overflow: auto;
-}
-
-table {
-  width: 100%;
 }
 
 .example-loading-shade {
@@ -40,9 +36,15 @@ table {
 /* Column Widths */
 .mat-column-number,
 .mat-column-state {
-  max-width: 64px;
+  max-width: 100px;
+  min-width: 120px;
 }
 
 .mat-column-created {
   max-width: 124px;
+}
+
+.filter-field{
+  min-width: 80%;
+  margin-left: 10%;
 }

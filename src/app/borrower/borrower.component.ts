@@ -96,7 +96,23 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
           console.log("got response");
         });
     }
+  }
 
+  loans(borrower) {
+    console.log("on loans of the borrower", borrower);
+    // if (!localStorage.getItem('book')) {
+    //   alert("choose book in books table first!");
+    // }
+    // else {
+    // this.borrowerDatabase.createBookLoan(borrower, this.book)
+    //   .subscribe(data => {
+    //     this.message = data.message;
+    //     localStorage.removeItem('book');
+    //     //this.submitted = true;
+    //     alert(this.message);
+    //     console.log("got response");
+    //   });
+    // }
   }
 }
 

@@ -6,6 +6,7 @@ import { CustomerDetailsComponent } from '../customer-details/customer-details.c
 import { BookComponent } from '../book/book.component';
 import { AddBorrowerComponent } from '../add-borrower/add-borrower.component';
 import { BorrowerComponent } from '../borrower/borrower.component';
+import { BookLoansComponent } from '../book-loans/book-loans.component';
 
 
 const routes: Routes = [
@@ -45,6 +46,10 @@ const routes: Routes = [
   {
     path: 'borrowers/:id',
     component: CustomerDetailsComponent
+  },
+  {
+    path: 'loans',
+    component: BookLoansComponent
   }
 ];
 

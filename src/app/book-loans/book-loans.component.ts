@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BookLoansComponent implements OnInit {
 
+  displayedColumns: string[] = ['name', 'ssn', 'card_id', 'phone', 'address', 'email', 'actions'];
+
   constructor() { }
 
   ngOnInit() {

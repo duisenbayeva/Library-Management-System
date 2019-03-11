@@ -1,3 +1,68 @@
-<p>
-  book-loans works!
-</p>
+<div class="example-container mat-elevation-z8">
+  <div class="example-loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+    <mat-progress-spinner *ngIf="isLoadingResults"></mat-progress-spinner>
+    <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+      GitHub's API rate limit has been reached. It will be reset in one minute.
+    </div>
+  </div>
+
+  <div class="example-table-container">
+
+    <mat-form-field class="filter-field">
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+
+    <li class="nav-item">
+      <a routerLink="/borrower/add" class="btn btn-light btn-sm" role="button" routerLinkActive="active">Add
+        Borrower</a>
+    </li>
+
+    <table mat-table class="mat-elevation-z8" [dataSource]="borrowers">
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> name </th>
+        <td mat-cell *matCellDef="let borrower"> {{borrower.fname+" "+borrower.lname}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="ssn">
+        <th mat-header-cell *matHeaderCellDef> ssn </th>
+        <td mat-cell *matCellDef="let borrower"> {{borrower.ssn}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="card_id">
+        <th mat-header-cell *matHeaderCellDef> card No </th>
+        <td mat-cell *matCellDef="let borrower"> {{borrower.card_id}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef> phone </th>
+        <td mat-cell *matCellDef="let borrower"> {{borrower.phone}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef> address </th>
+        <td mat-cell *matCellDef="let borrower"> {{borrower.address}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> email </th>
+        <td mat-cell *matCellDef="let borrower"> {{borrower.email}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> actions </th>
+        <td mat-cell *matCellDef="let borrower">
+          <button md-raised-button (click)="checkOut(borrower)">proceed</button>
+          <button md-raised-button (click)="loans(borrower)">loans</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClicked(row)"></tr>
+
+    </table>
+  </div>
+
+  <mat-paginator [length]="resultsLength" [pageSize]="30"></mat-paginator>
+</div>
