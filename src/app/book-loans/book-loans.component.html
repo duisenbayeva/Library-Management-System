@@ -17,44 +17,48 @@
         Borrower</a>
     </li>
 
-    <table mat-table class="mat-elevation-z8" [dataSource]="borrowers">
+    <table mat-table class="mat-elevation-z8" [dataSource]="loans">
 
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> name </th>
-        <td mat-cell *matCellDef="let borrower"> {{borrower.fname+" "+borrower.lname}} </td>
+      <ng-container matColumnDef="borrower">
+        <th mat-header-cell *matHeaderCellDef> borrower </th>
+        <td mat-cell *matCellDef="let loan"> {{loan.borrower}} </td>
       </ng-container>
 
 
-      <ng-container matColumnDef="ssn">
-        <th mat-header-cell *matHeaderCellDef> ssn </th>
-        <td mat-cell *matCellDef="let borrower"> {{borrower.ssn}} </td>
+      <ng-container matColumnDef="book">
+        <th mat-header-cell *matHeaderCellDef> book </th>
+        <td mat-cell *matCellDef="let loan"> {{loan.book}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="card_id">
-        <th mat-header-cell *matHeaderCellDef> card No </th>
-        <td mat-cell *matCellDef="let borrower"> {{borrower.card_id}} </td>
+      <ng-container matColumnDef="date_out">
+        <th mat-header-cell *matHeaderCellDef> date out </th>
+        <td mat-cell *matCellDef="let loan"> {{loan.date_out}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="phone">
-        <th mat-header-cell *matHeaderCellDef> phone </th>
-        <td mat-cell *matCellDef="let borrower"> {{borrower.phone}} </td>
+      <ng-container matColumnDef="due_date">
+        <th mat-header-cell *matHeaderCellDef> due date </th>
+        <td mat-cell *matCellDef="let loan"> {{loan.due_date}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="address">
-        <th mat-header-cell *matHeaderCellDef> address </th>
-        <td mat-cell *matCellDef="let borrower"> {{borrower.address}} </td>
+      <ng-container matColumnDef="date_in">
+        <th mat-header-cell *matHeaderCellDef> date in </th>
+        <td mat-cell *matCellDef="let loan"> {{loan.date_in}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef> email </th>
-        <td mat-cell *matCellDef="let borrower"> {{borrower.email}} </td>
+      <ng-container matColumnDef="fine">
+        <th mat-header-cell *matHeaderCellDef> fine amount </th>
+        <td mat-cell *matCellDef="let loan"> {{loan.fine}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="paid">
+        <th mat-header-cell *matHeaderCellDef> paid </th>
+        <td mat-cell *matCellDef="let loan"> {{loan.paid}} </td>
       </ng-container>
 
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> actions </th>
-        <td mat-cell *matCellDef="let borrower">
-          <button md-raised-button (click)="checkOut(borrower)">proceed</button>
-          <button md-raised-button (click)="loans(borrower)">loans</button>
+        <td mat-cell *matCellDef="let loan">
+          <button md-raised-button (click)="checkIn(loan)">check in</button>
         </td>
       </ng-container>
 

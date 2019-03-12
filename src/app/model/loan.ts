@@ -1,6 +1,8 @@
 export interface Loan {
     isbn: string;
-    borrower_id: string;
+    book: string;
+    card_id: string;
+    borrower: string;
     loan_id: string;
     date_out: string;
     date_in: string;
