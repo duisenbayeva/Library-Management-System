@@ -71,7 +71,13 @@ export class BookLoansComponent implements OnInit, AfterViewInit {
         if (this.borrowerId != 0) {
           this.loans = JSON.parse(localStorage.getItem('loans'))[this.borrowerId];
         } else {
-          this.loans = JSON.parse(localStorage.getItem('allLoans'));
+          var tempLoans = JSON.parse(localStorage.getItem('loans'));
+          let tmp = [];
+          Object.keys(tempLoans).map(function (key, value) {
+            tmp = tmp.concat(tempLoans[key]);
+          });
+          this.loans = tmp;
+          console.log("combined =", tmp);
         }
 
 
@@ -92,10 +98,61 @@ export class BookLoansComponent implements OnInit, AfterViewInit {
 
   updateLoans() {
     console.log("update loans");
+    var today = new Date();
+    var loans = JSON.parse(localStorage.getItem('loans'));
+
+    for (var k in loans) {
+      for (var i = 0; i < loans[k].length; i++) {
+
+        if (loans[k][i].date_in && loans[k][i].date_in > loans[k][i].due_date && !loans[k][i].paid) {
+
+          let diffMs = (new Date(loans[k][i].date_in).getTime() - new Date(loans[k][i].due_date).getTime()); // milliseconds
+          let diffDays = Math.floor(diffMs / 86400000); // days
+
+          loans[k][i].fine_amt = diffDays * 0.25;
+          console.log("late return, not paid", diffDays);
+
+        } else if (!loans[k][i].date_in && today.getTime() > new Date(loans[k][i].due_date).getTime()) {
+
+          let diffMs = (today.getTime() - new Date(loans[k][i].due_date).getTime()); // milliseconds
+          let diffDays = Math.floor(diffMs / 86400000); // days
+
+          loans[k][i].fine_amt = diffDays * 0.25;
+          console.log("late, not returned", diffDays);
+
+
+        } else {
+          console.log("alright");
+          loans[k][i].fine_amt = 0;
+        }
+        //console.log(loans[k][i]);
+      }
+    }
+
+    localStorage.setItem('loans', JSON.stringify(loans));
+
   }
 
   checkIn(loan: Loan) {
-    console.log(loan);
+
+    var tempLoans = JSON.parse(localStorage.getItem('loans'));
+    for (var i = 0; i < tempLoans[loan.card_id].length; i++) {
+      if (tempLoans[loan.card_id][i].isbn == loan.isbn) {
+        console.log(i, this.loans[i]);
+
+        //this.loans.splice(i, 1);
+
+        tempLoans[loan.card_id][i].date_in = new Date();
+
+        console.log(tempLoans[loan.card_id][i]);
+
+        //tempLoans[this.borrowerId] = this.loans;
+        localStorage.setItem('loans', JSON.stringify(tempLoans));
+        alert("Successfully checked in!");
+
+      }
+
+    }
 
   }
 }

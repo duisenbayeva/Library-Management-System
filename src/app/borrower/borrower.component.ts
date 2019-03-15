@@ -33,6 +33,7 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
   book: Book;
   loans: {};
   allLoans: Loan[];
+  bookIds: {};
 
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -43,8 +44,10 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
     this.book = JSON.parse(localStorage.getItem('book'));
     this.loans = JSON.parse(localStorage.getItem("loans"));
     this.allLoans = JSON.parse(localStorage.getItem("allLoans"));
+    this.bookIds = JSON.parse(localStorage.getItem("bookIds"));
     if (this.loans == null) this.loans = {};
     if (this.allLoans == null) this.allLoans = [];
+    if (this.bookIds == null) this.bookIds = {};
   }
 
   ngAfterViewInit() {
@@ -105,15 +108,18 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
       //     console.log("got response");
       //   });
 
+      if (this.loans[borrower.card_id] == null) {
+        this.loans[borrower.card_id] = [];
+      }
+
       localStorage.removeItem('book');
       console.log(this.loans[borrower.card_id], this.loans[borrower.card_id].length);
       if (this.loans[borrower.card_id].length == 3) {
         alert("Cannot check out more than three books");
 
+      } else if (this.bookIds[this.book.isbn] == true) {
+        alert("Book is not available");
       } else {
-        if (this.loans[borrower.card_id] == null) {
-          this.loans[borrower.card_id] = [];
-        }
         this.addLoan(this.book, borrower);
       }
       //this.submitted = true;
@@ -135,8 +141,10 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
     console.log(this.loans, this.loans[borrower.card_id]);
     this.loans[borrower.card_id].push(loan);
     this.allLoans.push(loan);
+    this.bookIds[book.isbn] = true;
     localStorage.setItem('loans', JSON.stringify(this.loans));
     localStorage.setItem('allLoans', JSON.stringify(this.allLoans));
+    localStorage.setItem('bookIds', JSON.stringify(this.bookIds));
     alert("successfully checked out!");
   }
 
