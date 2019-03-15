@@ -8,6 +8,10 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { MatPaginator } from '@angular/material';
 import { Book } from '../model/book';
+import { Router } from '@angular/router';
+import { BorrowerLoans } from '../model/borrowerLoans';
+import { Loan } from '../model/loan';
+import { LoanService } from '../services/loan.service';
 
 @Component({
   selector: 'app-borrower',
@@ -27,13 +31,20 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
   isRateLimitReached = false;
   message = "";
   book: Book;
+  loans: {};
+  allLoans: Loan[];
+
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
     this.book = JSON.parse(localStorage.getItem('book'));
+    this.loans = JSON.parse(localStorage.getItem("loans"));
+    this.allLoans = JSON.parse(localStorage.getItem("allLoans"));
+    if (this.loans == null) this.loans = {};
+    if (this.allLoans == null) this.allLoans = [];
   }
 
   ngAfterViewInit() {
@@ -90,7 +101,12 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
       this.borrowerDatabase.createBookLoan(borrower, this.book)
         .subscribe(data => {
           this.message = data.message;
+
           localStorage.removeItem('book');
+          console.log(this.loans[borrower.card_id]);
+          if (this.loans[borrower.card_id] == null) this.loans[borrower.card_id] = [];
+          this.addLoan(this.book, borrower);
+
           //this.submitted = true;
           alert(this.message);
           console.log("got response");
@@ -98,7 +114,25 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
     }
   }
 
-  loans(borrower) {
+  addLoan(book: Book, borrower: Borrower) {
+    var loan = new Loan();
+    loan.isbn = book.isbn;
+    loan.book = book.title;
+    loan.card_id = borrower.card_id;
+    loan.borrower = borrower.fname + " " + borrower.lname;
+    loan.loan_id = "null";
+    loan.date_out = new Date();
+    loan.due_date = new Date();
+    loan.due_date.setDate(loan.date_out.getDate() + 14);
+    loan.fine_amt = 0;
+    console.log(this.loans, this.loans[borrower.card_id]);
+    this.loans[borrower.card_id].push(loan);
+    this.allLoans.push(loan);
+    localStorage.setItem('loans', JSON.stringify(this.loans));
+    localStorage.setItem('allLoans', JSON.stringify(this.allLoans));
+  }
+
+  getLoans(borrower) {
     console.log("on loans of the borrower", borrower);
     // if (!localStorage.getItem('book')) {
     //   alert("choose book in books table first!");
@@ -113,6 +147,10 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
     //     console.log("got response");
     //   });
     // }
+
+    var myurl = `${'loans'}`;
+    localStorage.setItem("borrower", JSON.stringify(borrower));
+    this.router.navigateByUrl(myurl);
   }
 }
 

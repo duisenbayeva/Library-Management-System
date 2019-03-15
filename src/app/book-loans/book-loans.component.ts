@@ -5,6 +5,7 @@ import { LoanService } from '../services/loan.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable, merge, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { Borrower } from '../model/borrower';
 
 @Component({
   selector: 'app-book-loans',
@@ -26,12 +27,14 @@ export class BookLoansComponent implements OnInit, AfterViewInit {
   isRateLimitReached = false;
   message = "";
   loan: Loan;
+  borrower: Borrower;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
+    this.borrower = JSON.parse(localStorage.getItem('borrower'));
   }
 
 
@@ -60,7 +63,11 @@ export class BookLoansComponent implements OnInit, AfterViewInit {
           this.isRateLimitReached = true;
           return observableOf([]);
         })
-      ).subscribe(data => this.loans = data);
+      ).subscribe(data => {
+
+        this.loans = JSON.parse(localStorage.getItem('allLoans'));
+      });
+
   }
 
   applyFilter(filterValue: string) {
@@ -72,5 +79,14 @@ export class BookLoansComponent implements OnInit, AfterViewInit {
     this.isLoadingResults = true;
     this.isRateLimitReached = false;
     this.ngAfterViewInit();
+  }
+
+  updateLoans() {
+    console.log("update loans");
+  }
+
+  checkIn(loan: Loan) {
+    console.log(loan);
+
   }
 }

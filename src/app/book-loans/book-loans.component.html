@@ -12,10 +12,9 @@
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
     </mat-form-field>
 
-    <li class="nav-item">
-      <a routerLink="/borrower/add" class="btn btn-light btn-sm" role="button" routerLinkActive="active">Add
-        Borrower</a>
-    </li>
+    <div class="nav-item">
+      <button class="btn btn-light btn-sm" role="button" (click)="updateLoans()">Update</button>
+    </div>
 
     <table mat-table class="mat-elevation-z8" [dataSource]="loans">
 
@@ -63,7 +62,7 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClicked(row)"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
     </table>
   </div>
