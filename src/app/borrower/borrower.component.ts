@@ -98,19 +98,26 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
       alert("choose book in books table first!");
     }
     else {
-      this.borrowerDatabase.createBookLoan(borrower, this.book)
-        .subscribe(data => {
-          this.message = data.message;
+      // this.borrowerDatabase.createBookLoan(borrower, this.book)
+      //   .subscribe(data => {
+      //     this.message = data.message;
 
-          localStorage.removeItem('book');
-          console.log(this.loans[borrower.card_id]);
-          if (this.loans[borrower.card_id] == null) this.loans[borrower.card_id] = [];
-          this.addLoan(this.book, borrower);
+      //     console.log("got response");
+      //   });
 
-          //this.submitted = true;
-          alert(this.message);
-          console.log("got response");
-        });
+      localStorage.removeItem('book');
+      console.log(this.loans[borrower.card_id], this.loans[borrower.card_id].length);
+      if (this.loans[borrower.card_id].length == 3) {
+        alert("Cannot check out more than three books");
+
+      } else {
+        if (this.loans[borrower.card_id] == null) {
+          this.loans[borrower.card_id] = [];
+        }
+        this.addLoan(this.book, borrower);
+      }
+      //this.submitted = true;
+
     }
   }
 
@@ -130,6 +137,7 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
     this.allLoans.push(loan);
     localStorage.setItem('loans', JSON.stringify(this.loans));
     localStorage.setItem('allLoans', JSON.stringify(this.allLoans));
+    alert("successfully checked out!");
   }
 
   getLoans(borrower) {
@@ -148,7 +156,7 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
     //   });
     // }
 
-    var myurl = `${'loans'}`;
+    var myurl = `${'loans'}/${borrower.card_id}`;
     localStorage.setItem("borrower", JSON.stringify(borrower));
     this.router.navigateByUrl(myurl);
   }

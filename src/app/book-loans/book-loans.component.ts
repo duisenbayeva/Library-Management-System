@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, merge, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { Borrower } from '../model/borrower';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-book-loans',
@@ -28,13 +29,15 @@ export class BookLoansComponent implements OnInit, AfterViewInit {
   message = "";
   loan: Loan;
   borrower: Borrower;
+  borrowerId: number;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.borrower = JSON.parse(localStorage.getItem('borrower'));
+    this.borrowerId = +this.route.snapshot.paramMap.get('borrowerId');
   }
 
 
@@ -64,8 +67,14 @@ export class BookLoansComponent implements OnInit, AfterViewInit {
           return observableOf([]);
         })
       ).subscribe(data => {
+        console.log(this.borrowerId);
+        if (this.borrowerId != 0) {
+          this.loans = JSON.parse(localStorage.getItem('loans'))[this.borrowerId];
+        } else {
+          this.loans = JSON.parse(localStorage.getItem('allLoans'));
+        }
 
-        this.loans = JSON.parse(localStorage.getItem('allLoans'));
+
       });
 
   }

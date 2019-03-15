@@ -50,6 +50,10 @@ const routes: Routes = [
   {
     path: 'loans',
     component: BookLoansComponent
+  },
+  {
+    path: 'loans/:borrowerId',
+    component: BookLoansComponent
   }
 ];
 
